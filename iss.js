@@ -56,7 +56,6 @@ const nextISSTimesForMyLocation = function(callback) {
         return callback(error, null);
       }
       fetchISSFlyOverTimes(coordinates, (error, passing) => {
-        console.log(coordinates.latitude);
         if (error) {
           return callback(error, null);
         }
