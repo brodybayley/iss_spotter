@@ -5,5 +5,6 @@ fetchISSFlyOverTimes({ latitude: '49.2825', longitude: '-123.1291' }, (error, co
     console.log("It didn't work!", error);
     return;
   }
-  console.log('It worked! Returned:', coordinates);
+  console.log('It worked! Returned flyover times:', coordinates);
 });
+
