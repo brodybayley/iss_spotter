@@ -23,18 +23,16 @@ const fetchCoordsByIP = function(ip, callback) {
     if (response.statusCode !== 200) {
       const msg = `Status Code ${response.statusCode} when fetching coordinates for IP. Response: ${body}`;
       return callback(Error(msg), null);
-    } else {
-      const latitude = JSON.parse(body).latitude;
-      const longitude = JSON.parse(body).longitude;
-      const coordinates = `latitude: ${latitude}, longitude: ${longitude}`;
-      return callback(null, coordinates);
     }
+    const latitude = JSON.parse(body).latitude;
+    const longitude = JSON.parse(body).longitude;
+    callback(null, { latitude, longitude });
   });
 };
 
 const fetchISSFlyOverTimes = function(coordinates, callback) {
   const url = `http://api.open-notify.org/iss-pass.json?lat=${coordinates.latitude}&lon=${coordinates.longitude}`;
-  console.log(url);
+
   request(url, (error, response, body) => {
     if (error) {
       return callback(error, null);
@@ -42,10 +40,9 @@ const fetchISSFlyOverTimes = function(coordinates, callback) {
     if (response.statusCode !== 200) {
       const msg = `Status Code ${response.statusCode} when fetching pass times: ${body}`;
       return callback(Error(msg), null);
-    } else {
-      let passing = JSON.parse(body).response;
-      return callback(null, passing);
     }
+    const passing = JSON.parse(body).response;
+    callback(null, passing);
   });
 };
 
@@ -59,6 +56,7 @@ const nextISSTimesForMyLocation = function(callback) {
         return callback(error, null);
       }
       fetchISSFlyOverTimes(coordinates, (error, passing) => {
+        console.log(coordinates.latitude);
         if (error) {
           return callback(error, null);
         }
